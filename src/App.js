@@ -1,9 +1,12 @@
 import React from 'react';
 
+import SeasonOverview from './components/season-overview'
+
+
 function App() {
   return (
     <div>
-      <h1>JUL$</h1>
+      <SeasonOverview />
     </div>
   );
 }
