@@ -2,16 +2,35 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import { API_ENDPOINT } from '../../config/constants'
-import { episodesData } from '../../data'
+import EpisodeOverview from './episode-overview'
+import EpisodesList from './episodes'
+
+const Container = styled.section`
+  display: flex;
+`
+
+const SeasonView = styled.div`
+  flex-basis: 65%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  & > * {
+    color: #fff;
+  }
+`
 
 
 const SeasonOverview = () => {
   const [mediaData, setMediaData] = useState({})
   const [seasonData, setSeasonData] = useState({})
+  const [selectedEpisode, setSelectedEpisode] = useState(0)
   const media = 'insecure'
   const season = 1
 
-  const { Title, Plot } = mediaData
+  const { Title, Plot, Poster } = mediaData
   const { Episodes } = seasonData
 
   useEffect(() => {
@@ -32,30 +51,22 @@ const SeasonOverview = () => {
       .catch(error => console.error(error))
   }, [])
 
-  const renderEpisodes = Episodes && Episodes.map((episode, i) => {
-    const { Title, Released, Rating } = episode
-    return (
-      <li key={i}>
-        <div style={{ backgroundImage: `url("/img/${episodesData[i].image}")` }} />
-        <h3>{Title}</h3>
-        <p>{episodesData[i].plot}</p>
-      </li>
-    )
-  })
+  const select = (i) => {
+    setSelectedEpisode(i)
+  }
 
   return (
-    <section>
-      <div>
-        <span>season {season}</span>
+    <Container>
+      <SeasonView style={{ backgroundImage: `url("${Poster}")` }}>
+        <span>Season {season}</span>
         <h1>{Title}</h1>
         <p>{Plot}</p>
-        <div>
-          <ul>{renderEpisodes}</ul>
-          <button>prev</button>
-          <button>next</button>
-        </div>
-      </div>
-    </section>
+        <EpisodesList episodes={Episodes} select={select} />
+      </SeasonView>
+      {Episodes &&
+        <EpisodeOverview selected={selectedEpisode} episode={Episodes[selectedEpisode]} />
+      }
+    </Container>
   )
 }
 
