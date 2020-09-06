@@ -44,6 +44,7 @@ const P = styled.p`
 const Content = styled.div`
   margin-top: 222px;
   max-width: 492px;
+  align-self: center;
 `
 
 
@@ -88,13 +89,13 @@ const SeasonOverview = () => {
 
   return (
     <Container>
-      <SeasonView style={{ backgroundImage: `url("${Poster}")` }}>
+      <SeasonView style={{ backgroundImage: `linear-gradient(rgba(0,0,0, 0.6), rgba(0,0,0, 0.6)), url("${Poster}")` }}>
         <Content>
           <S>Season {season}</S>
           <H1>{Title}</H1>
           <P>{Plot}</P>
         </Content>
-        <EpisodesList ref={episodesList} episodes={Episodes} select={select} />
+        <EpisodesList ref={episodesList} episodes={Episodes} select={select} selected={selectedEpisode} />
       </SeasonView>
       {Episodes &&
         <EpisodeOverview selected={selectedEpisode} episode={Episodes[selectedEpisode]} height={height} />

@@ -28,6 +28,23 @@ const Thumb = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #000000;
+    z-index: 1;
+    opacity: ${({ selected }) => selected ? '0' : '0.6'};
+    transition: opacity .35s ease-out;
+  }
+  &:hover {
+    &:before {
+       opacity: 0;
+    }
+  }
 `
 
 const Number = styled.span`
@@ -41,6 +58,8 @@ const Number = styled.span`
   font-family: 'Helvetica Neue Bold';
   font-size: 16px;
   line-height: 19px;
+  position: relative;
+  z-index: 2;
 `
 
 const H3 = styled.h3`
@@ -70,7 +89,7 @@ const Button = styled.button`
   }
 `
 
-const Episodes = React.forwardRef(({ episodes = [], select }, ref) => {
+const Episodes = React.forwardRef(({ episodes = [], select, selected }, ref) => {
   const [translate, setTranslate] = useState(0)
 
   if(!episodes.length) return null
@@ -87,7 +106,7 @@ const Episodes = React.forwardRef(({ episodes = [], select }, ref) => {
     const { Episode, Title } = episode
     return (
       <Card key={i} onClick={() => select(i)}>
-        <Thumb style={{ backgroundImage: `url("/img/${episodesData[i].image}")` }}>
+        <Thumb selected={i === selected} style={{ backgroundImage: `url("/img/${episodesData[i].image}")` }}>
           <Number>{Episode}</Number>
         </Thumb>
         <H3>{Title}</H3>

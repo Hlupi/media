@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { episodesData } from '../../data'
+import Star from './star'
 
 const Container = styled.div`
   flex-basis: 35%;
@@ -16,22 +17,77 @@ const Thumb = styled.div`
   background-repeat: no-repeat;
 `
 
+const PaddedBox = styled.div`
+  padding-left: 38px;
+  padding-right: 44px;
+`
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: ${({ height }) => `${height}px`};
+`
+
+const Stats = styled(PaddedBox)`
+  padding-top: 45px;
+  padding-bottom: 42px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid rgba(151, 151, 151, 0.2);
+  font-size: 18px;
+  line-height: 22px;
+`
+
+const Rating = styled.span`
+  margin-left: 17px;
+  font-family: 'Helvetica Neue Bold';
+`
+
+const Description = styled(PaddedBox)`
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`
+
+const Name = styled.h2`
+  margin-bottom: 7px;
+  font-family: 'Helvetica Neue Bold';
+  font-size: 27px;
+  line-height: 32px;
+`
+
+const Plot = styled.p`
+  font-size: 19px;
+  line-height: 22px;
+`
+
+
+
 const EpisodeOverview = ({ selected, episode, height }) => {
-  const {image, plot} = episodesData[selected]
+  const { Episode, Released, imdbRating } = episode
+  const { image, plot } = episodesData[selected]
+  const roundedRating = Math.round(imdbRating)
+  const ratingToDisplay = isNaN(roundedRating) ? '?' : roundedRating
 
   return (
     <Container>
       <Thumb style={{ backgroundImage: `url("/img/${image}")` }} height={height} />
-      <div>
-        <div>
-          <p>Episode {episode.Episode} - {episode.Released}</p>
-          <span>{episode.imdbRating}</span>
-        </div>
-        <div>
-          <h2>{episode.Title}</h2>
-          <p>{plot}</p>
-        </div>
-      </div>
+      <Wrapper height={height}>
+        <Stats>
+          <p>Episode {Episode} &mdash; {Released}</p>
+          <span>
+            <Star />
+            <Rating>{ratingToDisplay}</Rating>
+            /10
+          </span>
+        </Stats>
+        <Description>
+          <Name>{episode.Title}</Name>
+          <Plot>{plot}</Plot>
+        </Description>
+      </Wrapper>
     </Container>
   )
 }
