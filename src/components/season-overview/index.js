@@ -10,16 +10,40 @@ const Container = styled.section`
 `
 
 const SeasonView = styled.div`
+  padding-left: 96px;
   flex-basis: 65%;
   flex-grow: 0;
   flex-shrink: 0;
-  height: 100vh;
+  min-height: 100vh;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  display: flex;
+  flex-wrap: wrap;
   & > * {
     color: #fff;
   }
+`
+
+const S = styled.span`
+  font-size: 23px;
+  line-height: 27px;
+`
+
+const H1 = styled.h1`
+  font-family: 'Helvetica Neue Bold';
+  font-size: 74px;
+  line-height: 88px;
+`
+
+const P = styled.p`
+  font-size: 23px;
+  line-height: 27px;
+`
+
+const Content = styled.div`
+  margin-top: 222px;
+  max-width: 492px;
 `
 
 
@@ -27,6 +51,8 @@ const SeasonOverview = () => {
   const [mediaData, setMediaData] = useState({})
   const [seasonData, setSeasonData] = useState({})
   const [selectedEpisode, setSelectedEpisode] = useState(0)
+  const [height, setHeight] = useState(0)
+  const episodesList = React.createRef()
   const media = 'insecure'
   const season = 1
 
@@ -51,6 +77,11 @@ const SeasonOverview = () => {
       .catch(error => console.error(error))
   }, [])
 
+  useEffect(() => {
+    const episodesListHeight = episodesList && episodesList.current && episodesList.current.offsetHeight
+    setHeight(episodesListHeight)
+  }, [episodesList])
+
   const select = (i) => {
     setSelectedEpisode(i)
   }
@@ -58,13 +89,15 @@ const SeasonOverview = () => {
   return (
     <Container>
       <SeasonView style={{ backgroundImage: `url("${Poster}")` }}>
-        <span>Season {season}</span>
-        <h1>{Title}</h1>
-        <p>{Plot}</p>
-        <EpisodesList episodes={Episodes} select={select} />
+        <Content>
+          <S>Season {season}</S>
+          <H1>{Title}</H1>
+          <P>{Plot}</P>
+        </Content>
+        <EpisodesList ref={episodesList} episodes={Episodes} select={select} />
       </SeasonView>
       {Episodes &&
-        <EpisodeOverview selected={selectedEpisode} episode={Episodes[selectedEpisode]} />
+        <EpisodeOverview selected={selectedEpisode} episode={Episodes[selectedEpisode]} height={height} />
       }
     </Container>
   )

@@ -3,13 +3,25 @@ import styled from 'styled-components'
 
 import { episodesData } from '../../data'
 
+const Container = styled.div`
+  flex-basis: 35%;
+  flex-grow: 0;
+  flex-shrink: 0;
+`
 
-const EpisodeOverview = ({ selected, episode }) => {
+const Thumb = styled.div`
+  height: ${({ height }) => height ? `calc(100% - ${height}px)` : 'calc(100% - 250px) '} ;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+`
+
+const EpisodeOverview = ({ selected, episode, height }) => {
   const {image, plot} = episodesData[selected]
 
   return (
-    <div>
-      <div style={{ backgroundImage: `url("/img/${image}")` }} />
+    <Container>
+      <Thumb style={{ backgroundImage: `url("/img/${image}")` }} height={height} />
       <div>
         <div>
           <p>Episode {episode.Episode} - {episode.Released}</p>
@@ -20,7 +32,7 @@ const EpisodeOverview = ({ selected, episode }) => {
           <p>{plot}</p>
         </div>
       </div>
-    </div>
+    </Container>
   )
 }
 

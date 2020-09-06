@@ -2,14 +2,17 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { episodesData } from '../../data'
+import Arrow from './arrow'
 
 const Wrapper = styled.div`
+  margin-top: auto;
   overflow: hidden;
 `
 
 const List = styled.ul`
-  margin-bottom: 24px;
+  margin-bottom: 14px;
   display: flex;
+  transition: transform .35s ease-out;
 `
 
 const Card = styled.li`
@@ -27,17 +30,53 @@ const Thumb = styled.div`
   background-repeat: no-repeat;
 `
 
-const H3 = styled.h3`
-  margin-bottom: 10px;
+const Number = styled.span`
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  width: 30px;
+  height: 30px;
+  background: #fff;
+  color: #000;
+  font-family: 'Helvetica Neue Bold';
+  font-size: 16px;
+  line-height: 19px;
 `
 
-const Episodes = ({ episodes = [], select }) => {
+const H3 = styled.h3`
+  margin-bottom: 10px;
+  font-family: 'Helvetica Neue Bold';
+  font-size: 15px;
+  line-height: 18px;
+`
+
+const P = styled.p`
+  font-size: 13px;
+  line-height: 15px;
+`
+
+const BContainer = styled.div`
+  padding-right: 21px;
+  padding-bottom: 19px;
+  text-align: right;
+`
+
+const Button = styled.button`
+  padding: 10px;
+  opacity: ${({ disabled }) => disabled ? '0.2': '1'};
+  transition: opacity .35s ease-out;
+  &:first-of-type {
+    margin-right: 5px;
+  }
+`
+
+const Episodes = React.forwardRef(({ episodes = [], select }, ref) => {
   const [translate, setTranslate] = useState(0)
 
   if(!episodes.length) return null
 
   const slide = (direction) => {
-    if(direction === 'forward') {
+    if(direction === 'back') {
       setTranslate(translate + 228)
     } else {
       setTranslate(translate - 228)
@@ -45,24 +84,28 @@ const Episodes = ({ episodes = [], select }) => {
   }
 
   const renderEpisodes = episodes && episodes.map((episode, i) => {
-    const { Title } = episode
+    const { Episode, Title } = episode
     return (
       <Card key={i} onClick={() => select(i)}>
-        <Thumb style={{ backgroundImage: `url("/img/${episodesData[i].image}")` }} />
+        <Thumb style={{ backgroundImage: `url("/img/${episodesData[i].image}")` }}>
+          <Number>{Episode}</Number>
+        </Thumb>
         <H3>{Title}</H3>
-        <p>{episodesData[i].plot}</p>
+        <P>{episodesData[i].plot}</P>
       </Card>
     )
   })
 
   return (
-    <Wrapper>
+    <Wrapper ref={ref}>
       <List style={{ transform: `translateX(${translate}px)`}}>{renderEpisodes}</List>
-      <button disabled={translate === 0} onClick={() => slide('forward')}>prev</button>
-      <button onClick={slide}>next</button>
+      <BContainer>
+        <Button disabled={translate === 0} onClick={() => slide('back')} aria-label='Slide back'><Arrow /></Button>
+        <Button onClick={slide} aria-label='Slide forward'><Arrow right /></Button>
+      </BContainer>
     </Wrapper>
   )
-}
+})
 
 
 export default Episodes
