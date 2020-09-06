@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { episodesData } from '../../data'
-import Star from './star'
+import { episodesData } from '../../../data'
+import Star from '../../fragments/icons/star'
 
 const Container = styled.div`
   flex-basis: 35%;
@@ -65,7 +65,7 @@ const Plot = styled.p`
 
 
 
-const EpisodeOverview = ({ selected, episode, height }) => {
+const EpisodeInformation = ({ selected, episode, height }) => {
   const { Episode, Released, imdbRating } = episode
   const { image, plot } = episodesData[selected]
   const roundedRating = Math.round(imdbRating)
@@ -93,4 +93,4 @@ const EpisodeOverview = ({ selected, episode, height }) => {
 }
 
 
-export default EpisodeOverview
+export default EpisodeInformation

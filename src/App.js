@@ -1,7 +1,7 @@
 import React from 'react';
 
 import StyleReset from './styles'
-import SeasonOverview from './components/season-overview'
+import SeasonOverview from './components/blocks/season-overview'
 
 
 function App() {

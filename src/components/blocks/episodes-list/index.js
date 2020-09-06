@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { episodesData } from '../../data'
-import Arrow from './arrow'
+import { episodesData } from '../../../data'
+import Arrow from '../../fragments/icons/arrow'
 
 const Wrapper = styled.div`
   margin-top: auto;
@@ -89,7 +89,7 @@ const Button = styled.button`
   }
 `
 
-const Episodes = React.forwardRef(({ episodes = [], select, selected }, ref) => {
+const EpisodesList = React.forwardRef(({ episodes = [], select, selected }, ref) => {
   const [translate, setTranslate] = useState(0)
 
   if(!episodes.length) return null
@@ -127,4 +127,4 @@ const Episodes = React.forwardRef(({ episodes = [], select, selected }, ref) => 
 })
 
 
-export default Episodes
+export default EpisodesList

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import { API_ENDPOINT } from '../../config/constants'
-import EpisodeOverview from './episode-overview'
-import EpisodesList from './episodes'
+import { API_ENDPOINT } from '../../../config/constants'
+import EpisodeInformation from '../episode-informaton'
+import EpisodesList from '../episodes-list'
 
 const Container = styled.section`
   display: flex;
@@ -98,7 +98,7 @@ const SeasonOverview = () => {
         <EpisodesList ref={episodesList} episodes={Episodes} select={select} selected={selectedEpisode} />
       </SeasonView>
       {Episodes &&
-        <EpisodeOverview selected={selectedEpisode} episode={Episodes[selectedEpisode]} height={height} />
+        <EpisodeInformation selected={selectedEpisode} episode={Episodes[selectedEpisode]} height={height} />
       }
     </Container>
   )
