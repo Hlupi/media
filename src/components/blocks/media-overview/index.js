@@ -58,7 +58,7 @@ const Content = styled.div`
 `
 
 
-const SeasonOverview = () => {
+const MediaOverview = () => {
   const [mediaData, setMediaData] = useState({})
   const [seasonData, setSeasonData] = useState({})
   const [selectedEpisode, setSelectedEpisode] = useState(0)
@@ -114,4 +114,4 @@ const SeasonOverview = () => {
   )
 }
 
-export default SeasonOverview
+export default MediaOverview
