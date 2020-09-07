@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 import { episodesData } from '../../../data'
@@ -33,16 +33,30 @@ const Button = styled.button`
 
 const EpisodesList = React.forwardRef(({ episodes = [], select, selected }, ref) => {
   const [translate, setTranslate] = useState(0)
+  const [active, setActive] = useState(0)
+  const [stopForwardSlide, setStopForwardSlide] = useState(false)
 
-  if(!episodes.length) return null
+  const decideIfShouldSlide = () => {
+    const container = ref && ref.current
+    const container_width = container && container.offsetWidth
+    setStopForwardSlide(active * 228 + container_width > 228 * episodes.length)
+  }
 
   const slide = (direction) => {
     if(direction === 'back') {
       setTranslate(translate + 228)
+      setActive(active - 1)
     } else {
       setTranslate(translate - 228)
+      setActive(active + 1)
     }
   }
+
+  useEffect(() => {
+    decideIfShouldSlide()
+  }, [active])
+
+  if (!episodes.length) return null
 
   const renderEpisodes = episodes && episodes.map((episode, i) => {
     const { Episode, Title } = episode
@@ -62,7 +76,7 @@ const EpisodesList = React.forwardRef(({ episodes = [], select, selected }, ref)
       <List style={{ transform: `translateX(${translate}px)`}}>{renderEpisodes}</List>
       <BContainer>
         <Button disabled={translate === 0} onClick={() => slide('back')} aria-label='Slide back'><Arrow /></Button>
-        <Button onClick={slide} aria-label='Slide forward'><Arrow right /></Button>
+        <Button disabled={stopForwardSlide} onClick={slide} aria-label='Slide forward'><Arrow right /></Button>
       </BContainer>
     </Wrapper>
   )

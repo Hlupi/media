@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 const Container = styled.li`
@@ -61,7 +61,7 @@ const P = styled.p`
 `
 
 
-const Card = ({ onClick, selected, image, episode, title, plot}) => {
+const Card = ({ onClick, selected, image, episode, title, plot }) => {
   return (
     <Container onClick={onClick}>
       <Thumb selected={selected} style={{ backgroundImage: `url("/img/${image}")` }}>

@@ -5,9 +5,12 @@ import { episodesData } from '../../../data'
 import Star from '../../fragments/icons/star'
 
 const Container = styled.div`
-  flex-basis: 35%;
+  flex-basis: 100%;
   flex-grow: 0;
   flex-shrink: 0;
+  @media(min-width: 1280px) {
+    flex-basis: 35%;
+  }
 `
 
 const Thumb = styled.div`

@@ -7,11 +7,13 @@ import EpisodesList from '../episodes-list'
 
 const Container = styled.section`
   display: flex;
+  flex-wrap: wrap;
 `
 
 const SeasonView = styled.div`
-  padding-left: 96px;
-  flex-basis: 65%;
+  padding-top: 29px;
+  padding-left: 38px;
+  flex-basis: 100%;
   flex-grow: 0;
   flex-shrink: 0;
   min-height: 100vh;
@@ -20,6 +22,12 @@ const SeasonView = styled.div`
   background-repeat: no-repeat;
   display: flex;
   flex-wrap: wrap;
+  overflow: hidden;
+  @media(min-width: 1280px) {
+    padding-left: 96px;
+    overflow: visible;
+    flex-basis: 65%;
+  }
   & > * {
     color: #fff;
   }
@@ -42,9 +50,11 @@ const P = styled.p`
 `
 
 const Content = styled.div`
-  margin-top: 222px;
   max-width: 492px;
   align-self: center;
+  @media(max-width: 1439px) {
+    margin-bottom: 38px;
+  }
 `
 
 
