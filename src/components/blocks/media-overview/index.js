@@ -58,35 +58,37 @@ const Content = styled.div`
 `
 
 
-const MediaOverview = () => {
+const MediaOverview = ({ match }) => {
+  const name = match.params.slug
   const [mediaData, setMediaData] = useState({})
   const [seasonData, setSeasonData] = useState({})
   const [selectedEpisode, setSelectedEpisode] = useState(0)
   const [height, setHeight] = useState(0)
   const episodesList = React.createRef()
-  const media = 'insecure'
-  const season = 1
 
   const { Title, Plot, Poster } = mediaData
-  const { Episodes } = seasonData
+  const { Season, Episodes } = seasonData
 
-  useEffect(() => {
-    fetch(`${API_ENDPOINT}&t=${media}`)
-      .then(response => response.json())
-      .then(data => {
-        setMediaData(data)
-      })
-      .catch(error => console.error(error))
-  },[])
-
-  useEffect(() => {
-    fetch(`${API_ENDPOINT}&t=${media}&Season=${season}`)
+  const getSeason = (season) => {
+    return fetch(`${API_ENDPOINT}&t=${name}&Season=${season}`)
       .then(response => response.json())
       .then(data => {
         setSeasonData(data)
       })
       .catch(error => console.error(error))
-  }, [])
+  }
+
+  useEffect(() => {
+    fetch(`${API_ENDPOINT}&t=${name}`)
+      .then(response => response.json())
+      .then(data => {
+        setMediaData(data)
+        if(data.Type === 'series') {
+          getSeason(1)
+        }
+      })
+      .catch(error => console.error(error))
+  },[])
 
   useEffect(() => {
     const episodesListHeight = episodesList && episodesList.current && episodesList.current.offsetHeight
@@ -101,7 +103,7 @@ const MediaOverview = () => {
     <Container>
       <SeasonView style={{ backgroundImage: `linear-gradient(rgba(0,0,0, 0.6), rgba(0,0,0, 0.6)), url("${Poster}")` }}>
         <Content>
-          <S>Season {season}</S>
+          {Season && <S>Season {Season}</S>}
           <H1>{Title}</H1>
           <P>{Plot}</P>
         </Content>
