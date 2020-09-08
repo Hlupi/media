@@ -31,7 +31,7 @@ const Button = styled.button`
   }
 `
 
-const EpisodesList = ({ episodes = [], select, selected, forwardRef, dataIndices }) => {
+const EpisodesList = ({ episodes = [], select, selected, forwardRef }) => {
   const [translate, setTranslate] = useState(0)
   const [active, setActive] = useState(0)
   const [stopForwardSlide, setStopForwardSlide] = useState(false)
@@ -58,17 +58,16 @@ const EpisodesList = ({ episodes = [], select, selected, forwardRef, dataIndices
 
   if (!episodes.length) return null
 
-  const renderEpisodes = dataIndices.length && episodes && episodes.map((episode, i) => {
-    const j = dataIndices[i]
+  const renderEpisodes =  episodes.map((episode, i) => {
     const { Episode, Title } = episode
     return (
       <Card key={i}
         onClick={() => select(i)}
         selected={i === selected}
-        image={episodesData[j].image}
+        image={episodesData[i].image}
         episode={Episode}
         title={Title}
-        plot={episodesData[j].plot}
+        plot={episodesData[i].plot}
       />
     )
   })
