@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { episodesData } from '../../../data'
@@ -34,27 +34,23 @@ const Button = styled.button`
 const EpisodesList = ({ episodes = [], select, selected, forwardRef }) => {
   const [translate, setTranslate] = useState(0)
   const [active, setActive] = useState(0)
-  const [stopForwardSlide, setStopForwardSlide] = useState(false)
-
-  const decideIfShouldSlide = () => {
-    const container = forwardRef && forwardRef.current
-    const container_width = container && container.offsetWidth
-    setStopForwardSlide(active * 228 + container_width > 228 * episodes.length)
-  }
 
   const slide = (direction) => {
     if (direction === 'back') {
       setTranslate(translate + 228)
       setActive(active - 1)
+      select(active - 1)
     } else {
       setTranslate(translate - 228)
       setActive(active + 1)
+      select(active + 1)
     }
   }
 
-  useEffect(() => {
-    decideIfShouldSlide()
-  }, [active])
+  const handleClick = (i) => {
+    setActive(i)
+    select(i)
+  }
 
   if (!episodes.length) return null
 
@@ -62,7 +58,7 @@ const EpisodesList = ({ episodes = [], select, selected, forwardRef }) => {
     const { Episode, Title } = episode
     return (
       <Card key={i}
-        onClick={() => select(i)}
+        onClick={() => handleClick(i)}
         selected={i === selected}
         image={episodesData[i].image}
         episode={Episode}
@@ -77,7 +73,7 @@ const EpisodesList = ({ episodes = [], select, selected, forwardRef }) => {
       <List style={{ transform: `translateX(${translate}px)` }}>{renderEpisodes}</List>
       <BContainer>
         <Button disabled={translate === 0} onClick={() => slide('back')} aria-label='Slide back'><Arrow /></Button>
-        <Button disabled={stopForwardSlide} onClick={slide} aria-label='Slide forward'><Arrow right /></Button>
+        <Button disabled={active === episodes.length - 1} onClick={slide} aria-label='Slide forward'><Arrow right /></Button>
       </BContainer>
     </Wrapper>
   )
