@@ -15,7 +15,7 @@ const SeasonView = styled.div`
   padding-top: 29px;
   padding-left: 38px;
   flex-basis: 100%;
-  flex-grow: 0;
+  flex-grow: 1;
   flex-shrink: 0;
   min-height: 100vh;
   background-size: cover;
@@ -26,7 +26,6 @@ const SeasonView = styled.div`
   overflow: hidden;
   @media(min-width: 1280px) {
     padding-left: 96px;
-    overflow: visible;
     flex-basis: 65%;
   }
   & > * {
