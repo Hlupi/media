@@ -14,10 +14,12 @@ const Container = styled.div`
 `
 
 const Thumb = styled.div`
-  height: ${({ height }) => height ? `calc(100% - ${height}px)` : 'calc(100% - 275px) '} ;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  @media(min-width: 1280px) {
+    height: ${({ height }) => height ? `calc(100% - ${height}px)` : 'calc(100% - 275px) '} ;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 `
 
 const PaddedBox = styled.div`

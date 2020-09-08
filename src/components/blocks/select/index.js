@@ -7,6 +7,7 @@ const Dropdown = styled.select`
   background: none;
   border: none;
   color: #fff;
+  appearance: none;
 `
 
 const Select = ({ numOfOptions, handleChange, selected }) => {
