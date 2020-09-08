@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import { API_ENDPOINT } from '../../../config/constants'
+import { episodesData } from '../../../data/index'
 import EpisodeInformation from '../episode-informaton'
 import EpisodesList from '../episodes-list'
 
@@ -64,10 +65,15 @@ const MediaOverview = ({ match }) => {
   const [seasonData, setSeasonData] = useState({})
   const [selectedEpisode, setSelectedEpisode] = useState(0)
   const [height, setHeight] = useState(0)
+  const [dataIndices, setDataIndices] = useState([])
   const episodesList = React.createRef()
 
   const { Title, Plot, Poster } = mediaData
   const { Season, Episodes } = seasonData
+
+  const getRandomInt = (max) => {
+    return Math.floor(Math.random() * Math.floor(max))
+  }
 
   const getSeason = (season) => {
     return fetch(`${API_ENDPOINT}&t=${name}&Season=${season}`)
@@ -88,12 +94,20 @@ const MediaOverview = ({ match }) => {
         }
       })
       .catch(error => console.error(error))
-  },[])
+  },[name])
 
   useEffect(() => {
     const episodesListHeight = episodesList && episodesList.current && episodesList.current.offsetHeight
     setHeight(episodesListHeight)
   }, [episodesList])
+
+  useEffect(() => {
+    if(Episodes) {
+      Episodes.length && Episodes.length > episodesData.length ?
+        setDataIndices(Episodes.map(_ => getRandomInt(episodesData.length)))
+        : setDataIndices(Episodes.map((_, i) => i))
+    }
+  }, [Episodes])
 
   const select = (i) => {
     setSelectedEpisode(i)
@@ -107,10 +121,10 @@ const MediaOverview = ({ match }) => {
           <H1>{Title}</H1>
           <P>{Plot}</P>
         </Content>
-        <EpisodesList ref={episodesList} episodes={Episodes} select={select} selected={selectedEpisode} />
+        <EpisodesList forwardRef={episodesList} episodes={Episodes} select={select} selected={selectedEpisode} dataIndices={dataIndices} />
       </SeasonView>
-      {Episodes &&
-        <EpisodeInformation selected={selectedEpisode} episode={Episodes[selectedEpisode]} height={height} />
+      {Episodes && dataIndices.length &&
+        <EpisodeInformation selected={dataIndices[selectedEpisode]} episode={Episodes[selectedEpisode]} height={height} />
       }
     </Container>
   )

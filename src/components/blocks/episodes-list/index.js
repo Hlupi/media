@@ -24,26 +24,26 @@ const BContainer = styled.div`
 
 const Button = styled.button`
   padding: 10px;
-  opacity: ${({ disabled }) => disabled ? '0.2': '1'};
+  opacity: ${({ disabled }) => disabled ? '0.2' : '1'};
   transition: opacity .35s ease-out;
   &:first-of-type {
     margin-right: 5px;
   }
 `
 
-const EpisodesList = React.forwardRef(({ episodes = [], select, selected }, ref) => {
+const EpisodesList = ({ episodes = [], select, selected, forwardRef, dataIndices }) => {
   const [translate, setTranslate] = useState(0)
   const [active, setActive] = useState(0)
   const [stopForwardSlide, setStopForwardSlide] = useState(false)
 
   const decideIfShouldSlide = () => {
-    const container = ref && ref.current
+    const container = forwardRef && forwardRef.current
     const container_width = container && container.offsetWidth
     setStopForwardSlide(active * 228 + container_width > 228 * episodes.length)
   }
 
   const slide = (direction) => {
-    if(direction === 'back') {
+    if (direction === 'back') {
       setTranslate(translate + 228)
       setActive(active - 1)
     } else {
@@ -58,29 +58,31 @@ const EpisodesList = React.forwardRef(({ episodes = [], select, selected }, ref)
 
   if (!episodes.length) return null
 
-  const renderEpisodes = episodes && episodes.map((episode, i) => {
+  const renderEpisodes = dataIndices.length && episodes && episodes.map((episode, i) => {
+    const j = dataIndices[i]
     const { Episode, Title } = episode
     return (
       <Card key={i}
         onClick={() => select(i)}
         selected={i === selected}
-        image={episodesData[i].image}
+        image={episodesData[j].image}
         episode={Episode}
         title={Title}
-        plot={episodesData[i].plot} />
+        plot={episodesData[j].plot}
+      />
     )
   })
 
   return (
-    <Wrapper ref={ref}>
-      <List style={{ transform: `translateX(${translate}px)`}}>{renderEpisodes}</List>
+    <Wrapper ref={forwardRef}>
+      <List style={{ transform: `translateX(${translate}px)` }}>{renderEpisodes}</List>
       <BContainer>
         <Button disabled={translate === 0} onClick={() => slide('back')} aria-label='Slide back'><Arrow /></Button>
         <Button disabled={stopForwardSlide} onClick={slide} aria-label='Slide forward'><Arrow right /></Button>
       </BContainer>
     </Wrapper>
   )
-})
+}
 
 
 export default EpisodesList

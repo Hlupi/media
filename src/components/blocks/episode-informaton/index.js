@@ -67,7 +67,6 @@ const Plot = styled.p`
 `
 
 
-
 const EpisodeInformation = ({ selected, episode, height }) => {
   const { Episode, Released, imdbRating } = episode
   const { image, plot } = episodesData[selected]
