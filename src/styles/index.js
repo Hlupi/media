@@ -10,14 +10,6 @@ export default createGlobalStyle`
     font-family: 'Helvetica Neue Bold';
     src: url('/fonts/HelveticaNeueLTStd-Bd.otf') format('opentype');
   }
-  @font-face {
-    font-family: 'Helvetica Neue Light';
-    src: url('/fonts/HelveticaNeueLTStd-Lt.otf') format('opentype');
-  }
-  @font-face {
-    font-family: 'Helvetica Neue Medium';
-    src: url('/fonts/HelveticaNeueLTStd-Md.otf') format('opentype');
-  }
 
   html,
   body {
@@ -59,6 +51,14 @@ export default createGlobalStyle`
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Helvetica Neue Bold';
+  }
+
+  h1 {
+    font-size: 50px;
+    line-height: 1.2;
+    @media(min-width: 1280px) {
+      font-size: 74px;
+    }
   }
 
   button {
