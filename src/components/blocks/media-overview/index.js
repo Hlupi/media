@@ -5,6 +5,7 @@ import { API_ENDPOINT } from '../../../config/constants'
 import { episodesData } from '../../../data/index'
 import EpisodeInformation from '../episode-informaton'
 import EpisodesList from '../episodes-list'
+import Wrapper from '../../fragments/wrapper'
 
 const Container = styled.section`
   display: flex;
@@ -67,7 +68,7 @@ const MediaOverview = ({ match }) => {
   const [dataIndices, setDataIndices] = useState([])
   const episodesList = React.createRef()
 
-  const { Title, Plot, Poster } = mediaData
+  const { Title, Plot, Poster, Error } = mediaData
   const { Season, Episodes } = seasonData
 
   const getRandomInt = (max) => {
@@ -113,19 +114,25 @@ const MediaOverview = ({ match }) => {
   }
 
   return (
-    <Container>
-      <SeasonView style={{ backgroundImage: `linear-gradient(rgba(0,0,0, 0.6), rgba(0,0,0, 0.6)), url("${Poster}")` }}>
-        <Content>
-          {Season && <S>Season {Season}</S>}
-          <H1>{Title}</H1>
-          <P>{Plot}</P>
-        </Content>
-        <EpisodesList forwardRef={episodesList} episodes={Episodes} select={select} selected={selectedEpisode} dataIndices={dataIndices} />
-      </SeasonView>
-      {Episodes && dataIndices.length &&
-        <EpisodeInformation selected={dataIndices[selectedEpisode]} episode={Episodes[selectedEpisode]} height={height} />
+    <>
+      {Error ?
+        <Wrapper title={`Oops, ${Error}`} />
+      :
+      <Container>
+        <SeasonView style={{ backgroundImage: `linear-gradient(rgba(0,0,0, 0.6), rgba(0,0,0, 0.6)), url("${Poster}")` }}>
+          <Content>
+            {Season && <S>Season {Season}</S>}
+            <H1>{Title}</H1>
+            <P>{Plot}</P>
+          </Content>
+          <EpisodesList forwardRef={episodesList} episodes={Episodes} select={select} selected={selectedEpisode} dataIndices={dataIndices} />
+        </SeasonView>
+        {Episodes && dataIndices.length &&
+          <EpisodeInformation selected={dataIndices[selectedEpisode]} episode={Episodes[selectedEpisode]} height={height} />
+        }
+      </Container>
       }
-    </Container>
+      </>
   )
 }
 

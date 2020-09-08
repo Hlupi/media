@@ -2,14 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import SearchIcon from '../../fragments/icons/search'
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-`
+import Wrapper from '../../fragments/wrapper'
 
 const Form = styled.form`
   display: flex;
@@ -17,19 +10,13 @@ const Form = styled.form`
   align-items: center;
 `
 
-const H1 = styled.h1`
-  margin-bottom: 40px;
-  font-family: 'Helvetica Neue Bold';
-  font-size: 74px;
-  line-height: 88px;
-`
-
 const Input = styled.input`
   margin-right: 10px;
   border-style: solid;
   border-width: 1px;
   border-radius: 3px;
-  border-color: ${({ error }) => error ? 'rgb(184, 86, 86)' : 'rgba(151, 151, 151, 0.2)' };
+  background: rgba(255,255,255,0.7);
+  border-color: ${({ error }) => error ? 'rgb(254, 43, 0)' : 'rgba(0,0,0,0.8)' };
   font-size: 23px;
   line-height: 27px;
 `
@@ -54,13 +41,12 @@ const Search = ({ history }) => {
   }
 
   return (
-    <Container>
-      <H1>Search for your media content here</H1>
+    <Wrapper title='Search for your media content here'>
       <Form onSubmit={handleSubmit}>
         <Input onChange={handleChange} error={error} type='text' pattern='[^\s]+(\s[^\s]+)*' aria-label="type the name of the content you're looking for" />
         <button type='submit'><SearchIcon /></button>
       </Form>
-    </Container>
+    </Wrapper>
   )
 }
 
