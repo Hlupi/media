@@ -50,7 +50,6 @@ const Number = styled.span`
 
 const H3 = styled.h3`
   margin-bottom: 10px;
-  font-family: 'Helvetica Neue Bold';
   font-size: 15px;
   line-height: 18px;
 `

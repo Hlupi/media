@@ -19,16 +19,13 @@ const Container = styled.div`
 
 const Title = styled.h1`
   margin-bottom: 40px;
-  font-family: 'Helvetica Neue Bold';
-  font-size: 74px;
-  line-height: 88px;
-  max-width: 750px;
+  ${({ shorter }) => shorter && 'max-width: 750px;' }
 `
 
-const  Wrapper = ({ title, children }) => {
+const  Wrapper = ({ title, shorter, children }) => {
   return (
     <Container>
-      <Title>{title}</Title>
+      <Title shorter={shorter}>{title}</Title>
       {children}
     </Container>
   )

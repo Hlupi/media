@@ -14,7 +14,7 @@ const Container = styled.div`
 `
 
 const Thumb = styled.div`
-  height: ${({ height }) => height ? `calc(100% - ${height}px)` : 'calc(100% - 250px) '} ;
+  height: ${({ height }) => height ? `calc(100% - ${height}px)` : 'calc(100% - 275px) '} ;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -37,6 +37,7 @@ const Stats = styled(PaddedBox)`
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  flex-wrap: wrap;
   border-bottom: 1px solid rgba(151, 151, 151, 0.2);
   font-size: 18px;
   line-height: 22px;
@@ -48,15 +49,18 @@ const Rating = styled.span`
 `
 
 const Description = styled(PaddedBox)`
+  padding-top: 24px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  @media(max-width: 1280px) {
+    padding-bottom: 24px;
+  }
 `
 
 const Name = styled.h2`
   margin-bottom: 7px;
-  font-family: 'Helvetica Neue Bold';
   font-size: 27px;
   line-height: 32px;
 `

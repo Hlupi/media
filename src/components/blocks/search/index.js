@@ -41,9 +41,9 @@ const Search = ({ history }) => {
   }
 
   return (
-    <Wrapper title='Search for your media content here'>
+    <Wrapper title='Search for your media content here' shorter>
       <Form onSubmit={handleSubmit}>
-        <Input onChange={handleChange} error={error} type='text' pattern='[^\s]+(\s[^\s]+)*' aria-label="type the name of the content you're looking for" />
+        <Input placeholder='mighty boosh' onChange={handleChange} error={error} type='text' pattern='[^\s]+(\s[^\s]+)*' aria-label="type the name of the content you're looking for" />
         <button type='submit'><SearchIcon /></button>
       </Form>
     </Wrapper>

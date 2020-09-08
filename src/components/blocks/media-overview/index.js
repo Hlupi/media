@@ -5,7 +5,7 @@ import { API_ENDPOINT } from '../../../config/constants'
 import { episodesData } from '../../../data/index'
 import EpisodeInformation from '../episode-informaton'
 import EpisodesList from '../episodes-list'
-import Wrapper from '../../fragments/wrapper'
+import ErrorPage from '../error'
 
 const Container = styled.section`
   display: flex;
@@ -34,18 +34,7 @@ const SeasonView = styled.div`
   }
 `
 
-const S = styled.span`
-  font-size: 23px;
-  line-height: 27px;
-`
-
-const H1 = styled.h1`
-  font-family: 'Helvetica Neue Bold';
-  font-size: 74px;
-  line-height: 88px;
-`
-
-const P = styled.p`
+const Info = styled.span`
   font-size: 23px;
   line-height: 27px;
 `
@@ -65,7 +54,7 @@ const MediaOverview = ({ match }) => {
   const [seasonData, setSeasonData] = useState({})
   const [selectedEpisode, setSelectedEpisode] = useState(0)
   const [height, setHeight] = useState(0)
-  const [dataIndices, setDataIndices] = useState([])
+  const [dataIndices, setDataIndices] = useState([]) //to access the very limited dummy data set
   const episodesList = React.createRef()
 
   const { Title, Plot, Poster, Error } = mediaData
@@ -116,14 +105,14 @@ const MediaOverview = ({ match }) => {
   return (
     <>
       {Error ?
-        <Wrapper title={`Oops, ${Error}`} />
+        <ErrorPage message={Error} />
       :
       <Container>
         <SeasonView style={{ backgroundImage: `linear-gradient(rgba(0,0,0, 0.6), rgba(0,0,0, 0.6)), url("${Poster}")` }}>
           <Content>
-            {Season && <S>Season {Season}</S>}
-            <H1>{Title}</H1>
-            <P>{Plot}</P>
+            {Season && <Info>Season {Season}</Info>}
+            <h1>{Title}</h1>
+            <Info as='p'>{Plot}</Info>
           </Content>
           <EpisodesList forwardRef={episodesList} episodes={Episodes} select={select} selected={selectedEpisode} dataIndices={dataIndices} />
         </SeasonView>
