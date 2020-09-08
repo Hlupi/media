@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import { API_ENDPOINT } from '../../../config/constants'
-import { episodesData } from '../../../data/index'
 import EpisodeInformation from '../episode-informaton'
 import EpisodesList from '../episodes-list'
 import ErrorPage from '../error'
+import SeasonSelect from '../select'
 
 const Container = styled.section`
   display: flex;
@@ -51,36 +51,20 @@ const Content = styled.div`
 const MediaOverview = ({ match }) => {
   const name = match.params.slug
   const [mediaData, setMediaData] = useState({})
+  const [season, setSeason] = useState(1)
   const [seasonData, setSeasonData] = useState({})
   const [selectedEpisode, setSelectedEpisode] = useState(0)
   const [height, setHeight] = useState(0)
-  const [dataIndices, setDataIndices] = useState([]) //to access the very limited dummy data set
   const episodesList = React.createRef()
 
-  const { Title, Plot, Poster, Error } = mediaData
+  const { Title, Plot, Poster, Error, totalSeasons } = mediaData
   const { Season, Episodes } = seasonData
-
-  const getRandomInt = (max) => {
-    return Math.floor(Math.random() * Math.floor(max))
-  }
-
-  const getSeason = (season) => {
-    return fetch(`${API_ENDPOINT}&t=${name}&Season=${season}`)
-      .then(response => response.json())
-      .then(data => {
-        setSeasonData(data)
-      })
-      .catch(error => console.error(error))
-  }
 
   useEffect(() => {
     fetch(`${API_ENDPOINT}&t=${name}`)
       .then(response => response.json())
       .then(data => {
         setMediaData(data)
-        if(data.Type === 'series') {
-          getSeason(1)
-        }
       })
       .catch(error => console.error(error))
   },[name])
@@ -91,15 +75,22 @@ const MediaOverview = ({ match }) => {
   }, [episodesList])
 
   useEffect(() => {
-    if(Episodes) {
-      Episodes.length && Episodes.length > episodesData.length ?
-        setDataIndices(Episodes.map(_ => getRandomInt(episodesData.length)))
-        : setDataIndices(Episodes.map((_, i) => i))
+    if(mediaData.Type  === 'series') {
+      fetch(`${API_ENDPOINT}&t=${name}&Season=${season}`)
+        .then(response => response.json())
+        .then(data => {
+          setSeasonData(data)
+        })
+        .catch(error => console.error(error))
     }
-  }, [Episodes])
+  }, [season, mediaData, name])
 
   const select = (i) => {
     setSelectedEpisode(i)
+  }
+
+  const changeSeason = (num) => {
+    setSeason(num)
   }
 
   return (
@@ -110,15 +101,13 @@ const MediaOverview = ({ match }) => {
       <Container>
         <SeasonView style={{ backgroundImage: `linear-gradient(rgba(0,0,0, 0.6), rgba(0,0,0, 0.6)), url("${Poster}")` }}>
           <Content>
-            {Season && <Info>Season {Season}</Info>}
+            {Season && <SeasonSelect numOfOptions={totalSeasons} handleChange={changeSeason} selected={season} />}
             <h1>{Title}</h1>
             <Info as='p'>{Plot}</Info>
           </Content>
-          <EpisodesList forwardRef={episodesList} episodes={Episodes} select={select} selected={selectedEpisode} dataIndices={dataIndices} />
+          <EpisodesList forwardRef={episodesList} episodes={Episodes} select={select} selected={selectedEpisode} />
         </SeasonView>
-        {Episodes && dataIndices.length &&
-          <EpisodeInformation selected={dataIndices[selectedEpisode]} episode={Episodes[selectedEpisode]} height={height} />
-        }
+        {Episodes && <EpisodeInformation selected={selectedEpisode} episode={Episodes[selectedEpisode]} height={height} />}
       </Container>
       }
       </>
