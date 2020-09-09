@@ -6,6 +6,7 @@ import EpisodeInformation from '../episode-informaton'
 import EpisodesList from '../episodes-list'
 import ErrorPage from '../error'
 import SeasonSelect from '../select'
+import Spinner from '../../fragments/spinner'
 
 const Container = styled.section`
   display: flex;
@@ -55,6 +56,7 @@ const MediaOverview = ({ match }) => {
   const [seasonData, setSeasonData] = useState({})
   const [selectedEpisode, setSelectedEpisode] = useState(0)
   const [height, setHeight] = useState(0)
+  const [loading, setLoading] = useState(true)
   const episodesList = React.createRef()
 
   const { Title, Plot, Poster, Error, totalSeasons } = mediaData
@@ -65,6 +67,7 @@ const MediaOverview = ({ match }) => {
       .then(response => response.json())
       .then(data => {
         setMediaData(data)
+        setLoading(false)
       })
       .catch(error => console.error(error))
   },[name])
@@ -91,6 +94,10 @@ const MediaOverview = ({ match }) => {
 
   const changeSeason = (num) => {
     setSeason(num)
+  }
+
+  if (loading) {
+    return <Spinner />
   }
 
   return (

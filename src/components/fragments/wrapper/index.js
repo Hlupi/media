@@ -1,13 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const Container = styled.div`
+import { Container } from '../container'
+
+const SContainer = styled(Container)`
   padding: 16px;
-  display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
   background-color: #c5b99e;
   background-image:
     radial-gradient(circle farthest-corner at top left, rgba(254, 43, 0,1) 0%, rgba(225, 243, 97,0) 50%),
@@ -24,10 +22,10 @@ const Title = styled.h1`
 
 const  Wrapper = ({ title, shorter, children }) => {
   return (
-    <Container>
+    <SContainer>
       <Title shorter={shorter}>{title}</Title>
       {children}
-    </Container>
+    </SContainer>
   )
 }
 
